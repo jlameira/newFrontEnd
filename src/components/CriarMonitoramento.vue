@@ -20,6 +20,7 @@
                     <input type="text" class="proc1 " placeholder="Cor" v-model="cor" />
                     <input type="text" class="proc1 " placeholder="Tipo" v-model="tipo" />
 
+
                 </div>
                 <span id="selTipo" :class="seletipo">
                     <a href="javascript:void(0)" @click="seleTipo(1)" class="roubado-1 c-foto" title="Automóvel"></a>
@@ -48,6 +49,14 @@
             </div>
 
         </fieldset>
+
+        <fieldset>
+        <legend>Monitoramento</legend>
+            <div>
+                <label>Observações</label>
+                <textarea id="observacao" v-model="observacao" data-type="json"></textarea>
+            </div>
+        </fieldset>
         <div class="su">
             <button type="button" id="btnSalvarMonit" @click="salvarMonitoramento()">Salvar</button>
             <button type="button" onclick="location.hash='#monitoramento'">Cancelar</button>
@@ -56,127 +65,141 @@
 </template>
 
 <script>
-import { formataPlaca } from '../utils'
+import { formataPlaca } from "../utils";
 let tiposVeiculos = {
-    1: 'Automóvel',
-    2: 'Caminhão',
-    3: 'Motocicleta'
-}
+  1: "Automóvel",
+  2: "Caminhão",
+  3: "Motocicleta"
+};
 export default {
-
-    data() {
-        return {
-            placa: '',
-            tipo: '',
-            marca: '',
-            modelo: '',
-            ano: '',
-            cor: '',
-            seletipo: 'sel-tipo-',
-            at: '',
-            selected: '',
-            listaMarca: [],
-            listaModelo: []
-        }
+  data() {
+    return {
+      placa: "",
+      tipo: "",
+      marca: "",
+      modelo: "",
+      ano: "",
+      cor: "",
+      seletipo: "sel-tipo-",
+      at: "",
+      selected: "",
+      listaMarca: [],
+      listaModelo: [],
+      observacao: ""
+    };
+  },
+  methods: {
+    seleTipo(tipo) {
+      if (this.seletipo === "sel-tipo-" + tipo) {
+        this.seletipo = "sel-tipo-";
+        this.tipo = "";
+      } else {
+        this.tipo = tiposVeiculos[tipo];
+        this.seletipo = this.seletipo + tipo;
+      }
     },
-    methods: {
-        seleTipo(tipo) {
-            if (this.seletipo === 'sel-tipo-' + tipo) {
-                this.seletipo = 'sel-tipo-'
-                this.tipo = ''
-            } else {
-                this.tipo = tiposVeiculos[tipo]
-                this.seletipo = this.seletipo + tipo
-            }
-
-        },
-        seleCor(cor) {
-            cor.target.classList.toggle('at')
-            this.cor = cor.target.title
-            console.log(cor.target.title)
-        },
-        salvarMonitoramento() {
-            let dados = { ano: this.ano, "corCss": this.seletipo, marca: this.marca, "tipo": this.tipo, modelo: this.modelo, "cor": this.cor, "qtd_reconhecimento": 1, "observacao": "", "data_monitoramento": "2017-08-11T22:16:35.758Z", "veiculo_monitorado": this.placa }
-
-            axios.post('https://localhost.policiamilitar.mg.gov.br/v1/monitoramento', dados)
-                .then(resp => { this.adicionaRota(resp), console.log(resp) })
-                .catch(e => {
-                    if (!Array.isArray(e.response.data.erro)) {
-                        console.log('Error ', e.response.data['erro'])
-                    } else {
-                        e.response.data.erro.map(error => console.log('O campo abaixo é obrigatório', error.param))
-
-                    }
-                })
-
-        },
-        buscaModelos() {
-            this.modelo = ''
-            this.listaModelo = []
-            axios.get('https://localhost.policiamilitar.mg.gov.br/v1/modelo/' + this.marca)
-                .then(modelos => {
-                    Object.entries(modelos.data.retorno).map(resp => {
-                        let modelo = {}
-                        modelo.id = resp[0];
-                        modelo.nome = resp[1]
-                        this.listaModelo.push(modelo)
-                    })
-                })
-            return this.listaModelo;
-
-
-        },
-        adicionaRota(dados) {
-            const placa = formataPlaca(dados);
-            this.$store.state.listaDeRotas.push({
-                path: `/veiculo/${dados.data.retorno._id}`,
-                placa: placa,
-                compartilhado: false,
-                id: dados.data.retorno._id
-            })
-
-            this.limpaAtributos();
-
-        },
-        limpaAtributos() {
-            this.placa = '',
-                this.tipo = '',
-                this.marca = '',
-                this.modelo = '',
-                this.ano = '',
-                this.cor = '',
-                this.seletipo = 'sel-tipo-',
-                this.at = ''
-
-        }
-
-
+    seleCor(cor) {
+      cor.target.classList.toggle("at");
+      this.cor = cor.target.title;
+      console.log(cor.target.title);
     },
-    mounted() {
-        axios.get('https://localhost.policiamilitar.mg.gov.br/v1/marcamodelo/VOLKSWAGEN')
-            .then(resp => {
-                Object.entries(resp.data.retorno).map(resp => {
-                    let marca = {}
-                    marca.id = resp[0];
-                    marca.nome = resp[1]
-                    this.listaMarca.push(marca)
-                })
-                return
-            }
-            )
-            .catch(e => {
-                if (!Array.isArray(e.response.data.erro)) {
-                    console.log('Error ', e.response.data['erro'])
-                } else {
-                    e.response.data.erro.map(error => console.log('O campo abaixo é obrigatório', error.param))
+    salvarMonitoramento() {
+      let dados = {
+        ano: this.ano,
+        corCss: this.seletipo,
+        marca: this.marca,
+        tipo: this.tipo,
+        modelo: this.modelo,
+        cor: this.cor,
+        qtd_reconhecimento: 1,
+        observacao: this.observacao,
+        data_monitoramento: new Date(),
+        veiculo_monitorado: this.placa
+      };
+      axios
+        .post(
+          "https://localhost.policiamilitar.mg.gov.br/v1/monitoramento",
+          dados
+        )
+        .then(resp => {
+          this.adicionaRota(resp), console.log(resp);
+        })
+        .catch(e => {
+          if (!Array.isArray(e.response.data.erro)) {
+            console.log("Error ", e.response.data["erro"]);
+          } else {
+            e.response.data.erro.map(error =>
+              console.log("O campo abaixo é obrigatório", error.param)
+            );
+          }
+        });
+    },
+    buscaModelos() {
+      this.modelo = "";
+      this.listaModelo = [];
+      axios
+        .get(
+          "https://localhost.policiamilitar.mg.gov.br/v1/modelo/" + this.marca
+        )
+        .then(modelos => {
+          Object.entries(modelos.data.retorno).map(resp => {
+            let modelo = {};
+            modelo.id = resp[0];
+            modelo.nome = resp[1];
+            this.listaModelo.push(modelo);
+          });
+        });
+      return this.listaModelo;
+    },
+    adicionaRota(dados) {
+      const placa = formataPlaca(dados);
+      this.$store.state.listaDeRotas.push({
+        path: `/veiculo/${dados.data.retorno._id}`,
+        placa: placa,
+        compartilhado: false,
+        id: dados.data.retorno._id
+      });
 
-                }
-            })
-
-        return this.listaMarca
-
-
-        console.log('monitoramento >>>>>>>>>> ')
+      this.limpaAtributos();
+    },
+    limpaAtributos() {
+      (this.placa = ""),
+        (this.tipo = ""),
+        (this.marca = ""),
+        (this.modelo = ""),
+        (this.ano = ""),
+        (this.cor = ""),
+        (this.seletipo = "sel-tipo-"),
+        (this.at = "");
     }
-}
+  },
+  mounted() {
+    axios
+      .get(
+        "https://localhost.policiamilitar.mg.gov.br/v1/marcamodelo/VOLKSWAGEN"
+      )
+      .then(resp => {
+        Object.entries(resp.data.retorno).map(resp => {
+          let marca = {};
+          marca.id = resp[0];
+          marca.nome = resp[1];
+          this.listaMarca.push(marca);
+        });
+        return;
+      })
+      .catch(e => {
+        if (!Array.isArray(e.response.data.erro)) {
+          console.log("Error ", e.response.data["erro"]);
+        } else {
+          e.response.data.erro.map(error =>
+            console.log("O campo abaixo é obrigatório", error.param)
+          );
+        }
+      });
+
+    return this.listaMarca;
+
+    console.log("monitoramento >>>>>>>>>> ");
+  }
+};
 </script>
