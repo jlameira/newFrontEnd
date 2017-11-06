@@ -53,7 +53,7 @@
         <fieldset>
         <legend>Monitoramento</legend>
             <div>
-                <label>Observações</label>
+                <label>Observação</label>
                 <textarea id="observacao" v-model="observacao" data-type="json"></textarea>
             </div>
         </fieldset>
@@ -171,6 +171,7 @@ export default {
         (this.cor = ""),
         (this.seletipo = "sel-tipo-"),
         (this.at = "");
+        this.observacao = ""
     }
   },
   mounted() {
