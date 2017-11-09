@@ -1,9 +1,14 @@
 <template>
   <div id="app">
     <div id='g'>
+      <span id="spOp" class="op">
+        <a id="u1" href="javascript:configUser()" accesskey="u">c906947</a>
+        <a id="m1" href="javascript:menu()" accesskey="m">MENU</a>
+      </span>
       <app-header></app-header>
       <div id='c'>
-        <div id='c1'>
+          <router-view name="pesquisar"></router-view>
+        <div id='c1' v-if="this.$route.fullPath !== '/pesquisar'">
           <!-- <app-menu :rotas="routes"></app-menu> -->
           <app-menu :rotas="this.$store.state.listaDeRotas" @excluirMonitoramento="excluir($event)"></app-menu>
           <!-- <div id="c3" v-if="this.lista">
@@ -23,74 +28,75 @@
 </template>
 
 <script>
-import Header from './template/Header.vue';
-import Footer from './template/Footer.vue';
-import Menu from './components/Menu/Menu.vue'
-import router from './router'
+  import Header from './template/Header.vue';
+  import Footer from './template/Footer.vue';
+  import Menu from './components/Menu/Menu.vue'
+  import router from './router'
 
 
-export default {
-  name: 'app',
-  data() {
-    return {
-      msg: 'Welcome to Your Vue.js App',
-      routes: [],
-      veiculo: null
-    }
-  },
-  components: {
-    'app-header': Header,
-    'app-footer': Footer,
-    'app-menu': Menu
-  },
-  computed: {
-
-  },
-  mounted() {
-    let usuario = localStorage.getItem('usuario');
-    this.routes = [];
-    axios.get('https://localhost.policiamilitar.mg.gov.br/v1/monitoramento')
-      .then(resp => {
-        let arrayMonitormanto = []
-        resp.data.retorno.map(monit => {
-          let veiculo = {
-            placa: monit.placa,
-            path: '/veiculo/' + monit.id,
-            compartilhado: false,
-            id: monit.id
-          }
-          this.$store.state.listaDeRotas.push(veiculo);
-
-        })
-      })
-      .catch(err => console.log('Errrooooo>>>>: ' + err))
-
-
-    console.log('>>>>>>>>>>>>criei ' + usuario)
-  },
-  methods: {
-    criaLinkVeiculo() {
-      console.log('cria veiculo>>>>>>>>>>>>>>>>>>')
-      this.$data.veiculo = 'kkw-1035'
+  export default {
+    name: 'app',
+    data() {
+      return {
+        msg: 'Welcome to Your Vue.js App',
+        routes: [],
+        veiculo: null
+      }
+    },
+    components: {
+      'app-header': Header,
+      'app-footer': Footer,
+      'app-menu': Menu
+    },
+    computed: {
 
     },
-    excluir($event) {
-      axios.delete('https://localhost.policiamilitar.mg.gov.br/v1/monitoramento/' + $event)
+    mounted() {
+
+      let usuario = localStorage.getItem('usuario');
+      this.routes = [];
+      axios.get('https://localhost.policiamilitar.mg.gov.br/v3/monitoramento')
         .then(resp => {
-          this.removeDaRota(resp.data.retorno.placa)
+          let arrayMonitormanto = []
+          resp.data.retorno.map(monit => {
+            let veiculo = {
+              placa: monit.placa,
+              path: '/veiculo/' + monit.id,
+              compartilhado: false,
+              id: monit.id
+            }
+            this.$store.state.listaDeRotas.push(veiculo);
+
+          })
         })
+        .catch(err => console.log('Errrooooo>>>>: ' + err))
 
+
+      console.log('>>>>>>>>>>>>criei ' + usuario)
     },
-    removeDaRota(placa) {
-      let novoArray = [];
-      novoArray = this.$store.state.listaDeRotas.filter(function(m) {
-        return m.placa !== placa
-      })
-      this.$store.state.listaDeRotas = novoArray;
+    methods: {
+      criaLinkVeiculo() {
+        console.log('cria veiculo>>>>>>>>>>>>>>>>>>')
+        this.$data.veiculo = 'kkw-1035'
 
+      },
+      excluir($event) {
+        axios.delete('https://localhost.policiamilitar.mg.gov.br/v3/monitoramento/' + $event)
+          .then(resp => {
+            this.removeDaRota(resp.data.retorno.placa)
+          })
+
+      },
+      removeDaRota(placa) {
+        let novoArray = [];
+        novoArray = this.$store.state.listaDeRotas.filter(function (m) {
+          return m.placa !== placa
+        })
+        this.$store.state.listaDeRotas = novoArray;
+
+      }
     }
   }
-}
 </script>
 
 <style>

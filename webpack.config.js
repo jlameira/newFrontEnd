@@ -8,6 +8,14 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'build.js'
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jquery: 'jquery',
+      'window.jQuery': 'jquery',
+      jQuery: 'jquery'
+    })
+  ],
   module: {
     rules: [
       {
@@ -35,7 +43,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      'vue$': 'vue/dist/vue.esm.js'
+      'vue$': 'vue/dist/vue.esm.js',
+      mlens:__dirname + '/src/dependencies'
     }
   },
   devServer: {

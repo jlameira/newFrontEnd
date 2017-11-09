@@ -118,7 +118,7 @@ export default {
       };
       axios
         .post(
-          "https://localhost.policiamilitar.mg.gov.br/v1/monitoramento",
+          "https://localhost.policiamilitar.mg.gov.br/v3/monitoramento",
           dados
         )
         .then(resp => {
@@ -139,7 +139,7 @@ export default {
       this.listaModelo = [];
       axios
         .get(
-          "https://localhost.policiamilitar.mg.gov.br/v1/modelo/" + this.marca
+          "https://localhost.policiamilitar.mg.gov.br/v3/modelo/" + this.marca
         )
         .then(modelos => {
           Object.entries(modelos.data.retorno).map(resp => {
@@ -177,7 +177,7 @@ export default {
   mounted() {
     axios
       .get(
-        "https://localhost.policiamilitar.mg.gov.br/v1/marcamodelo/VOLKSWAGEN"
+        "https://localhost.policiamilitar.mg.gov.br/v3/marcamodelo/VOLKSWAGEN"
       )
       .then(resp => {
         Object.entries(resp.data.retorno).map(resp => {

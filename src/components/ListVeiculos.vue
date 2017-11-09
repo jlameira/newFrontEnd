@@ -43,8 +43,10 @@ export default {
 
     },
     mounted() {
+        //        document.getElementById('c1').classList.remove('no');
+        // document.getElementById('c2').classList.remove('no');
 
-        axios.get('https://localhost.policiamilitar.mg.gov.br/v1/monitoramento')
+        axios.get('https://localhost.policiamilitar.mg.gov.br/v3/monitoramento')
             .then(resp => {
                 this.listaVeiculo = resp.data.retorno
             })

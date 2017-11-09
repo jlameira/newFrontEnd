@@ -5,7 +5,6 @@ import router from './router'
 import { store } from './store/store';
 
 
-
 var VueCookie = require('vue-cookie');
 window.axios = require('axios');
 
@@ -16,7 +15,7 @@ if (process.env.NODE_ENV === 'production') {
   token = Vue.cookie.get('tokiuz')
 
 } else {
-  token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImp0aSI6IjVmNDlkYjhjLTdkOGMtNDA2ZS05NjdkLTM5NzRiMTk0ZGY1MiIsImlhdCI6MTUwOTk2MjM0NjkwNSwiZXhwIjoxNTA5OTYyNDMzMzA1fQ.eyJnIjoiYzkwNjk0NyIsInAiOiJDVFMiLCJyIjoiRFRTIiwidSI6NzEsImMiOjEyNSwiZiI6WyI1My4yNjgiXSwiaSI6ImlLREFZTTRZcnl2WDZpcDFmWUY2ZWwtZDRlNjk4eVRVYXF1MnhTT2UiLCJrIjoxfQ.8VInNTFCp43XOHN6YZK5r0CRSdZJZtonILWV08lx6aU';
+  token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImp0aSI6IjI2M2JlYzc1LWVhYzMtNDZjZi05ZmRmLTEyYmZlZWQ2ZTIwYyIsImlhdCI6MTUxMDI0OTIyNTQ2NiwiZXhwIjoxNTEwMjQ5MzExODY2fQ.eyJnIjoiYzkwNjk0NyIsInAiOiJDVFMiLCJyIjoiRFRTIiwidSI6NzEsImMiOjEyNSwiZiI6WyI1My4yNjgiXSwiaSI6IlBBUWVDcktkN0sxWmctRU9BRzFiM2RDTU1aSWR2c3JmcnFmWS03Vk0iLCJrIjoxfQ._Jjn_r8pwjbe2LTemK3eBQQL1rXpczWOWNI-dTqV0Ko';
   Vue.cookie.set('tokiuz', token, 1)
 
 }
