@@ -17,13 +17,11 @@ module.exports = {
     })
   ],
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
-          }
+          loaders: {}
           // other vue-loader options go here
         }
       },
@@ -44,12 +42,14 @@ module.exports = {
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.esm.js',
-      mlens:__dirname + '/src/dependencies'
+      mlens: __dirname + '/src/dependencies'
     }
   },
   devServer: {
     historyApiFallback: true,
-    noInfo: true
+    noInfo: true,
+    // port: 8080,
+    // contentBase: './dist',
   },
   performance: {
     hints: false

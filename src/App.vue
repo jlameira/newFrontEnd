@@ -8,7 +8,7 @@
       <app-header></app-header>
       <div id='c'>
           <router-view name="pesquisar"></router-view>
-        <div id='c1' v-if="this.$route.fullPath !== '/pesquisar'">
+        <div id='c1' v-if="this.$route.fullPath !== '/v3/pesquisar'">
           <!-- <app-menu :rotas="routes"></app-menu> -->
           <app-menu :rotas="this.$store.state.listaDeRotas" @excluirMonitoramento="excluir($event)"></app-menu>
           <!-- <div id="c3" v-if="this.lista">

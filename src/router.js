@@ -27,7 +27,7 @@ export default new VueRouter({
                 import ('./components/CriarMonitoramento.vue')
         },
         {
-            path: '/pesquisar',
+            path: '/v3/pesquisar',
             components: {
                 pesquisar: Pesquisar
             }

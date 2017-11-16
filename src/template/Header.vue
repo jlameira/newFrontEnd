@@ -4,13 +4,13 @@
         <div id="menuModulo">
             <ul>
                 <li id="li_monitoramento" >
-                    <router-link id="li_monitoramento" to="/" active-class="at" exact>Alertas </router-link>
+                    <a id="li_monitoramento" href="https://helios.policiamilitar.mg.gov.br/" >Alertas </a>
                 </li>
                 <li id="li_pesquisa">
-                    <router-link id="li_monitoramento" to="/pesquisar" active-class="at" exact>Pesquisar </router-link>
+                    <router-link id="li_monitoramento" to="/v3/pesquisar" active-class="at" exact>Pesquisar </router-link>
                 </li>
                 <li id="li_gerenciaCamera">
-                    <router-link id="li_monitoramento" to="/gerenciamento" active-class="at" exact>Gerenciamento </router-link>
+                    <a id="li_monitoramento" href="https://helios.policiamilitar.mg.gov.br/#gerenciaCamera" >Gerenciamento </a>
                 </li>
             </ul>
         </div>

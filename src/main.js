@@ -2,7 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import Auth from './Auth/Auth';
 import router from './router'
-import { store } from './store/store';
+import {
+  store
+} from './store/store';
+import VueProgress from 'vue-progress-path'
+Vue.use(VueProgress)
 
 
 var VueCookie = require('vue-cookie');
@@ -15,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
   token = Vue.cookie.get('tokiuz')
 
 } else {
-  token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImp0aSI6IjI2M2JlYzc1LWVhYzMtNDZjZi05ZmRmLTEyYmZlZWQ2ZTIwYyIsImlhdCI6MTUxMDI0OTIyNTQ2NiwiZXhwIjoxNTEwMjQ5MzExODY2fQ.eyJnIjoiYzkwNjk0NyIsInAiOiJDVFMiLCJyIjoiRFRTIiwidSI6NzEsImMiOjEyNSwiZiI6WyI1My4yNjgiXSwiaSI6IlBBUWVDcktkN0sxWmctRU9BRzFiM2RDTU1aSWR2c3JmcnFmWS03Vk0iLCJrIjoxfQ._Jjn_r8pwjbe2LTemK3eBQQL1rXpczWOWNI-dTqV0Ko';
+  token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImp0aSI6IjdhMTFiZWI5LTRkMzAtNDE4MC05Mjg2LThjNjVmNDBlNDQwMyIsImlhdCI6MTUxMDY4MjE2MDAwMywiZXhwIjoxNTEwNjgyMjQ2NDAzfQ.eyJnIjoiYzkwNjk0NyIsInAiOiJDVFMiLCJyIjoiRFRTIiwidSI6NzEsImMiOjEyNSwiZiI6WyI1My4yNjgiXSwiaSI6IjFCRlVOaHV4dXhGOThpcEcyaEtHbkNpR0Raam13YXE4SWpoRFlpXzMiLCJrIjoxfQ.0ikknVidLwHD62xuLPozHnfs-r-Db0qKuOMPm1G7nYI';
   Vue.cookie.set('tokiuz', token, 1)
 
 }
@@ -30,11 +34,11 @@ new Vue({
   router,
   render: h => h(App),
   created() {
-    Auth.setAuth(token,'c906947')
-    // var url = 'https://qapp.policiamilitar.mg.gov.br/chat/autenticacao/validar';
-    // axios.get(url)
-    //   // .then(res => console.log(res))
-    //   .then(usuario => Auth.setAuth(token, usuario.data.retorno.NUM_POLICIA))
-    //   .catch(err => err)
+    // Auth.setAuth(token, 'c906947')
+    var url = 'https://qapp.policiamilitar.mg.gov.br/chat/autenticacao/validar';
+    axios.get(url)
+      // .then(res => console.log(res))
+      .then(usuario => Auth.setAuth(token, usuario.data.retorno.NUM_POLICIA))
+      .catch(err => err)
   }
 })

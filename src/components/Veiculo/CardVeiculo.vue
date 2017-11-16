@@ -1,6 +1,8 @@
 <template>
     <figure :id="id" style="z-index: 1;" :class="tipoCard">
-        <img :src="img" :id="'img'+id" style="width: 100%;">
+        <!-- <img :src="img" :id="'img'+id" > -->
+                   <div  :id="'img'+id" :data-sisar-file="img" style="width: 100%;"></div>
+
 
 
         <figcaption>
@@ -20,6 +22,7 @@
 
 <script>
     import mlens from 'mlens/jquery.mlens-1.6.min.js'
+    // import SisarFile from 'mlens/sisar.min.js'
 
     export default {
         data() {
@@ -37,6 +40,9 @@
                 roubado:false,
                 img:''
             }
+        },
+        components:{
+
         },
         props: ["veiculo"],
         computed: {},
@@ -108,7 +114,8 @@
             }
         },
         mounted() {
-               $('#img' +this.id).mlens({
+            setTimeout(function(img){
+                $('#s-' +img).mlens({
                 imgSrc: $("#gear").attr("data-big"),
                 imgSrc2x: $("#gear").attr("data-big2x"),
                 lensShape: "square",
@@ -120,6 +127,10 @@
                 zoomLevel: 3,
                 responsive: true
             })
+
+            },1500, this.img )
+
+          
         },
         created(){
                this.endereco = this.veiculo.camera.endereco;
